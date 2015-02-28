@@ -1,5 +1,5 @@
 {
-    "name": "mata/media",
+    "name": "mata/mata-media",
     "description": "Media Management for MATA",
     "keywords": ["yii2", "mata-media", "media", "images", "mata", "video"],
     "type": "yii2-extension",
