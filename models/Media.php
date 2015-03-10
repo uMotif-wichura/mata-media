@@ -5,6 +5,7 @@ namespace mata\media\models;
 use Yii;
 use mata\db\ActiveRecord;
 use yii\db\ActiveQuery;
+use mata\arhistory\behaviors\HistoryBehavior;
 
 /**
  * This is the model class for table "{{%mata_media}}".
@@ -17,6 +18,13 @@ use yii\db\ActiveQuery;
  * @property integer $Height
  */
 class Media extends \mata\db\ActiveRecord {
+
+    public function behaviors() {
+        return [
+            HistoryBehavior::className()
+        ];
+    }
+
     /**
      * @inheritdoc
      */
