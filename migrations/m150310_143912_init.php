@@ -20,6 +20,7 @@ class m150310_143912_init extends Migration {
 	public function up() {
 		$this->createTable('{{%mata_media}}', [
 			'Id' => Schema::TYPE_PK,
+			'DocumentId' => Schema::TYPE_STRING . '(64) NOT NULL',
 			'Name' => Schema::TYPE_TEXT . " NOT NULL",
 			'URI' => Schema::TYPE_TEXT . " NOT NULL",
 			'Width' => Schema::TYPE_STRING . "(255) NOT NULL",

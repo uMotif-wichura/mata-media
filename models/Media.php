@@ -4,6 +4,7 @@ namespace mata\media\models;
 
 use Yii;
 use mata\db\ActiveRecord;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "{{%mata_media}}".
@@ -27,15 +28,20 @@ class Media extends \mata\db\ActiveRecord {
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
-        [['Name', 'MimeType'], 'required'],
+        [['Name', 'MimeType', 'DocumentId'], 'required'],
         [['URI'], 'string'],
         [['Width', 'Height'], 'integer'],
         [['Name'], 'string', 'max' => 255]
         ];
     }
+
+    
+     public static function find() {
+       return new MediaQuery(get_called_class());
+    }
+
 
     /**
      * @inheritdoc
@@ -49,4 +55,18 @@ class Media extends \mata\db\ActiveRecord {
         'Height' => 'Height',
         ];
     }
+}
+
+
+class MediaQuery extends ActiveQuery {
+
+    public function forItem($item) {
+
+        if (is_object($item))
+            $item = $item->getDocumentId();
+
+        $this->andWhere(['DocumentId' => $item]);
+        return $this;
+    }
+
 }

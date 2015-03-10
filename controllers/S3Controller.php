@@ -78,6 +78,7 @@ class S3Controller extends \mata\web\Controller {
 		$model = new Media() ;
 		$model->attributes = array(
 			"Name" => \Yii::$app->getRequest()->post("name"),
+			"DocumentId" => \Yii::$app->getRequest()->get("documentId"),
 			"URI" => $imageURL,
 			"Width" => 0,
 			"Height" => 0,
