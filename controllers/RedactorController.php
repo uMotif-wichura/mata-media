@@ -7,7 +7,6 @@ use mata\keyvalue\models\KeyValue;
 
 class RedactorController extends \yii\web\Controller {
 
-
 	// NOT THE RIGHT TO PLACE THESE - WHERE THOUGH?
 	const S3_KEY = "S3_KEY";
 	const S3_SECRET = "S3_SECRET";
