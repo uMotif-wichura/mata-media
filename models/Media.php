@@ -68,10 +68,13 @@ class Media extends \mata\db\ActiveRecord {
 
 class MediaQuery extends ActiveQuery {
 
-    public function forItem($item) {
+    public function forItem($item, $attribute = null) {
 
         if (is_object($item))
             $item = $item->getDocumentId();
+
+        if ($attribute != null)
+            $item .= "::" . $attribute;
 
         $this->andWhere(['DocumentId' => $item]);
         return $this;

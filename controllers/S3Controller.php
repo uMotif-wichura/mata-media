@@ -54,31 +54,14 @@ class S3Controller extends \mata\web\Controller {
 		$s3Bucket = KeyValue::findByKey(self::S3_BUCKET);
 
 		$imageURL = $s3Endpoint .  $s3Bucket  . "/" . urlencode(\Yii::$app->getRequest()->post("key"));
+		$documentId = \Yii::$app->getRequest()->get("documentId");
 
-		// $mediaWidth = null; 
-		// $mediaHeight = null;
-		// $mimeType = null;
-
-		// $imageAttributes = getimagesize($imageURL);
-
-		// if ($imageAttributes != null) {
-		// 	$mediaWidth = $imageAttributes[0];
-		// 	$mediaHeight = $imageAttributes[1];
-		// 	$mimeType = $imageAttributes['mime'];
-		// } else {
-		// 	$ch = curl_init($imageURL);
-		// 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		// 	curl_exec($ch);
-		// 	$mimeType = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
-		// // }
-
-		// 	print_r($mimeType);
-		// 	exit;
+		Media::find()->where(["DocumentId" => $documentId])->one()->delete();
 
 		$model = new Media() ;
 		$model->attributes = array(
 			"Name" => \Yii::$app->getRequest()->post("name"),
-			"DocumentId" => \Yii::$app->getRequest()->get("documentId"),
+			"DocumentId" => $documentId,
 			"URI" => $imageURL,
 			"Width" => 0,
 			"Height" => 0,
