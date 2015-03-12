@@ -11,7 +11,10 @@
         "codeception/codeception": "*",
         "yiisoft/yii2-codeception": "*",
         "yiisoft/yii2-faker": "*",
-        "mata/mata-key-value": "*"
+        "mata/mata-key-value": "*",
+        "harrytang/yii2-fineuploader": "*",
+        "aws/aws-sdk-php": "*",
+        "mata/mata-ar-history": "dev-development"
     },
     "autoload": {
         "psr-4": {
