@@ -55,21 +55,38 @@ class S3Controller extends \mata\web\Controller {
 
 		$imageURL = $s3Endpoint .  $s3Bucket  . "/" . urlencode(\Yii::$app->getRequest()->post("key"));
 		$documentId = \Yii::$app->getRequest()->get("documentId");
-
+	
 		Media::find()->where(["DocumentId" => $documentId])->one()->delete();
+
+		$mediaWidth = 0; 
+		$mediaHeight = 0;
+		$mimeType = "default";
+
+		$imageAttributes = getimagesize($imageURL);
+
+		if ($imageAttributes != null) {
+			$mediaWidth = $imageAttributes[0];
+			$mediaHeight = $imageAttributes[1];
+			$mimeType = $imageAttributes['mime'];
+		} else {
+			$ch = curl_init($imageURL);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_exec($ch);
+			$mimeType = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+		}
 
 		$model = new Media() ;
 		$model->attributes = array(
 			"Name" => \Yii::$app->getRequest()->post("name"),
 			"DocumentId" => $documentId,
 			"URI" => $imageURL,
-			"Width" => 0,
-			"Height" => 0,
-			"MimeType" => "default"
+			"Width" => $mediaWidth,
+			"Height" => $mediaHeight,
+			"MimeType" => $mimeType
 			);
 
 		if ($model->save() == false)
-			throw new CHttpException(500, $model->getTopError());
+			throw new \yii\web\HttpException(500, $model->getTopError());
 
 		$this->setResponseContentType("application/json");
 		echo Json::encode($model);
