@@ -55,8 +55,9 @@ class S3Controller extends \mata\web\Controller {
 
 		$imageURL = $s3Endpoint .  $s3Bucket  . "/" . urlencode(\Yii::$app->getRequest()->post("key"));
 		$documentId = \Yii::$app->getRequest()->get("documentId");
-	
-		Media::find()->where(["DocumentId" => $documentId])->one()->delete();
+
+		if($media = Media::find()->where(["DocumentId" => $documentId])->one())
+			$media->delete();
 
 		$mediaWidth = 0; 
 		$mediaHeight = 0;
