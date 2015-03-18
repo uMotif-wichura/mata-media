@@ -53,7 +53,7 @@ class S3Controller extends \mata\web\Controller {
 		$s3Endpoint = KeyValue::findByKey(self::S3_ENDPOINT);
 		$s3Bucket = KeyValue::findByKey(self::S3_BUCKET);
 
-		$imageURL = $s3Endpoint .  $s3Bucket  . "/" . urlencode(\Yii::$app->getRequest()->post("key"));
+		$imageURL = $s3Endpoint . "/" . $s3Bucket  . "/" . urlencode(\Yii::$app->getRequest()->post("key"));
 		$documentId = \Yii::$app->getRequest()->get("documentId");
 
 		if($media = Media::find()->where(["DocumentId" => $documentId])->one())
