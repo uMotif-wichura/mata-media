@@ -26,6 +26,7 @@ class m150310_143912_init extends Migration {
 			'Width' => Schema::TYPE_STRING . "(255) NOT NULL",
 			'Height' => Schema::TYPE_STRING . "(255) NOT NULL",
 			'MimeType' => Schema::TYPE_TEXT . " NOT NULL",
+			'Extra' => Schema::TYPE_TEXT
 			]);
 	}
 

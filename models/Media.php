@@ -16,6 +16,8 @@ use mata\arhistory\behaviors\HistoryBehavior;
  * @property string $URI
  * @property integer $Width
  * @property integer $Height
+ * @property string $MimeType
+ * @property string $Extra
  */
 class Media extends \mata\db\ActiveRecord {
 
@@ -39,7 +41,7 @@ class Media extends \mata\db\ActiveRecord {
     public function rules() {
         return [
         [['Name', 'MimeType', 'DocumentId'], 'required'],
-        [['URI'], 'string'],
+        [['URI', 'Extra'], 'string'],
         [['Width', 'Height'], 'integer'],
         [['Name'], 'string', 'max' => 255]
         ];
@@ -61,6 +63,7 @@ class Media extends \mata\db\ActiveRecord {
         'URI' => 'Uri',
         'Width' => 'Width',
         'Height' => 'Height',
+        'Extra' => 'Extra',
         ];
     }
 }
