@@ -21,15 +21,15 @@ class S3Controller extends \mata\web\Controller {
 
 		$this->setResponseContentType("application/json");
 
-		$s3Key = KeyValue::findbyKey(self::S3_KEY);
-		$s3Secret = KeyValue::findbyKey(self::S3_SECRET);
-		$s3Bucket = KeyValue::findbyKey(self::S3_BUCKET);
+		$s3Key = KeyValue::findValue(self::S3_KEY);
+		$s3Secret = KeyValue::findValue(self::S3_SECRET);
+		$s3Bucket = KeyValue::findValue(self::S3_BUCKET);
 
 		// Instantiate the S3 client with your AWS credentials
 		$s3Client = S3Client::factory(array(
 			'key'    => $s3Key,
 			'secret' => $s3Secret,
-			'region' => KeyValue::findbyKey(self::S3_REGION)
+			'region' => KeyValue::findValue(self::S3_REGION)
 			));
 
 		$policyDocument = '{"expiration":"2100-01-01T00:00:00Z","conditions":[{"bucket": "' . $s3Bucket . '"},{"acl": "public-read"}, ["starts-with", "$key", ""], ["starts-with", "$Content-Type", ""], 
@@ -50,8 +50,8 @@ class S3Controller extends \mata\web\Controller {
 
 	public function actionUploadSuccessful() {
 
-		$s3Endpoint = KeyValue::findByKey(self::S3_ENDPOINT);
-		$s3Bucket = KeyValue::findByKey(self::S3_BUCKET);
+		$s3Endpoint = KeyValue::findValue(self::S3_ENDPOINT);
+		$s3Bucket = KeyValue::findValue(self::S3_BUCKET);
 
 		$imageURL = $s3Endpoint . "/" . $s3Bucket  . "/" . urlencode(\Yii::$app->getRequest()->post("key"));
 		$documentId = \Yii::$app->getRequest()->get("documentId");
