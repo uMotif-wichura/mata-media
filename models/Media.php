@@ -67,21 +67,6 @@ class Media extends \mata\db\ActiveRecord {
         ];
     }
 
-    public function getDocumentId($attribute = null) {
-
-        $pk = $this->primaryKey;
-
-        if(empty($pk) && $this->isNewRecord)
-            $pk = uniqid('tmp_');
-
-        if (is_array($pk))
-            $pk = implode('-', $pk);            
-
-        if ($attribute != null)
-            $pk .= "::" . $attribute;
-
-        return sprintf("%s-%s", get_class($this), $pk);
-    }
 }
 
 

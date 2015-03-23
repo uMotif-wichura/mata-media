@@ -20,5 +20,8 @@
         "psr-4": {
             "mata\\media\\": ""
         }
+    },
+    "extra": {
+        "bootstrap": "mata\\media\\Bootstrap"
     }
 }

@@ -59,6 +59,17 @@ class S3Controller extends \mata\web\Controller {
 		if($media = Media::find()->where(["DocumentId" => $documentId])->one())
 			$media->delete();
 
+		$pattern = '/([a-zA-Z\\\]*)-([a-zA-Z0-9]*)(::)?([a-zA-Z]*)?/';
+		preg_match($pattern, $documentId, $matches);	
+
+		if(!empty($matches) && empty($matches[2])) {
+			$pk = uniqid('tmp_');
+			if(!empty($matches[4]))
+				$pk .= "::" . $matches[4];
+
+			$documentId = $matches[1] . "-" . $pk;
+		}
+
 		$mediaWidth = 0; 
 		$mediaHeight = 0;
 		$mimeType = "default";
