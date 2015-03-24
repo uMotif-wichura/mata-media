@@ -34,11 +34,6 @@ class Bootstrap implements BootstrapInterface
 				
 	}
 
-	private function canRun($app) 
-	{
-		return is_a($app, "yii\console\Application") == false;
-	}
-
 	private function updateDocumentId($model, $tmpDocumentId)
 	{
 		$attributePos = strpos($tmpDocumentId, "::");
@@ -53,4 +48,10 @@ class Bootstrap implements BootstrapInterface
 				throw new \yii\web\HttpException(500, $media->getTopError());
 		}
 	}
+
+	private function canRun($app) 
+	{
+		return is_a($app, "yii\console\Application") == false;
+	}
+	
 }
