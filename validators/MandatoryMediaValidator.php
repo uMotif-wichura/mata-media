@@ -9,6 +9,7 @@ use yii\helpers\Json;
 use yii\helpers\Inflector;
 use mata\media\validators\MandatoryMediaValidationAsset;
 use mata\helpers\StringHelper;
+use mata\media\models\Media;
 
 class MandatoryMediaValidator extends Validator
 {
@@ -25,14 +26,20 @@ class MandatoryMediaValidator extends Validator
     {
         $media = \Yii::$app->request->post('Media');
 
-        $hasAttributeInMedia = false;
-        foreach($media as $mediaEntity) {
-            if(StringHelper::endsWith($mediaEntity, '::' . $attribute))
-                $hasAttributeInMedia = true;
-        }
+        if(!empty($media)) {
+            $hasAttributeInMedia = false;
+            foreach($media as $mediaEntity) {
+                if(StringHelper::endsWith($mediaEntity, '::' . $attribute))
+                    $hasAttributeInMedia = true;
+            }
 
-        if(!$hasAttributeInMedia)
-            $model->addError($attribute, \Yii::t('yii', '{attribute} cannot be blank.', ['attribute' => Inflector::camel2words($attribute)]));
+            if(!$hasAttributeInMedia)
+                $model->addError($attribute, \Yii::t('yii', '{attribute} cannot be blank.', ['attribute' => Inflector::camel2words($attribute)]));
+        } else {
+            $mediaModel = Media::find()->forItem($model, $attribute)->one();
+            if(!$mediaModel)
+                $model->addError($attribute, \Yii::t('yii', '{attribute} cannot be blank.', ['attribute' => Inflector::camel2words($attribute)]));
+        }        
 
     }
 
