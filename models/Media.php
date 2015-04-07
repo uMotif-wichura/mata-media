@@ -23,7 +23,6 @@ class Media extends \mata\db\ActiveRecord {
 
     public function behaviors() {
         return [
-            HistoryBehavior::className()
         ];
     }
 
@@ -75,7 +74,9 @@ class MediaQuery extends ActiveQuery {
     public function forItem($item, $attribute = null) {
 
         if (is_object($item))
-            $item = $item->getDocumentId();
+            $item = $item->getDocumentId()->getId();
+
+
 
         if ($attribute != null)
             $item .= "::" . $attribute;
