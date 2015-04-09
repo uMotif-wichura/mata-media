@@ -101,14 +101,14 @@ class S3Controller extends \mata\web\Controller {
 			throw new \yii\web\HttpException(500, $model->getTopError());
 
 		$mediaResponse = [
-			'Id' => $model->Id,
-			'Name' => $model->Name,
-			'URI' => $model->URI,
-			'DocumentId' => $model->DocumentId->getId(),
-			'Width' => $model->Width,
-			'Height' => $model->Height,
-			'MimeType' => $model->MimeType,
-			'Extra' => $model->Extra,
+		'Id' => $model->Id,
+		'Name' => $model->Name,
+		'URI' => $model->URI,
+		'DocumentId' => $model->DocumentId->getId(),
+		'Width' => $model->Width,
+		'Height' => $model->Height,
+		'MimeType' => $model->MimeType,
+		'Extra' => $model->Extra,
 		];
 		
 		$this->setResponseContentType("application/json");
