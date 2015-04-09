@@ -57,22 +57,6 @@ class MandatoryMediaValidator extends Validator
         return 'matamedia.validation.mandatory($form, value, messages, ' . Json::encode($options) . ');';
     }
 
-    // protected function identifyVideoServiceProvider($attribute) {
-    //     $url = preg_replace('#\#.*$#', '', trim($attribute));
-    //     $services_regexp = [
-    //         $this->vimeoPattern       => 'vimeo',
-    //         $this->youtubePattern     => 'youtube'
-    //     ];
-
-    //     foreach ($services_regexp as $pattern => $service) {
-    //         if(preg_match($pattern, $attribute, $matches)) {
-    //             return $service;
-    //         }
-    //     }
-
-    //     return false;
-    // }
-
     protected function prepareJsPattern($pattern) {
         $pattern = preg_replace('/\\\\x\{?([0-9a-fA-F]+)\}?/', '\u$1', $pattern);
         $deliminator = substr($pattern, 0, 1);
