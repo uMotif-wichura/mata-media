@@ -59,7 +59,7 @@ class S3Controller extends \mata\web\Controller {
 		if($media = Media::find()->where(["DocumentId" => $documentId])->one())
 			$media->delete();
 
-		$pattern = '/([a-zA-Z\\\]*)-([a-zA-Z0-9]*)(::)?([a-zA-Z]*)?/';
+		$pattern = '/([a-zA-Z\\\]*)-([a-zA-Z0-9]*)(::)?([a-zA-Z0-9]*)?/';
 		preg_match($pattern, $documentId, $matches);	
 
 		if(!empty($matches) && empty($matches[2])) {
