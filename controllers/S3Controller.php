@@ -115,4 +115,19 @@ class S3Controller extends \mata\web\Controller {
 		echo Json::encode($mediaResponse);
 	}
 
+	public function actionSetRandomFileName() {
+
+		$this->setResponseContentType("application/json");
+
+		$name = \Yii::$app->getRequest()->post("name");
+
+		$pathInfo = pathinfo($name);
+		$extension = isset($pathInfo["extension"]) ? $pathInfo["extension"] : "";
+
+		$objectName = md5(time() . $name) . ".$extension";
+
+		$response = array('key' => $objectName);
+		echo json_encode($response);
+	}
+
 }
