@@ -23,15 +23,16 @@ class Bootstrap implements BootstrapInterface
 		});
 
 		Event::on(Model::class, Model::EVENT_BEFORE_VALIDATE, function(\yii\base\ModelEvent $event) {
-			$activeValidators = $event->sender->getActiveValidators();
+			if($event->sender instanceof \mata\db\ActiveRecord) {
+				$activeValidators = $event->sender->getActiveValidators();
 
-			foreach($activeValidators as $validator) {				
-				if(get_class($validator) != 'mata\media\validators\MandatoryMediaValidator')
-					continue;
+				foreach($activeValidators as $validator) {				
+					if(get_class($validator) != 'mata\media\validators\MandatoryMediaValidator')
+						continue;
 
-				$event->sender->addAdditionalAttribute('Media');
+					$event->sender->addAdditionalAttribute('Media');
+				}
 			}
-
 		});
 
 	}
