@@ -17,6 +17,7 @@ class MandatoryMediaValidator extends Validator
     public function init()
     {
         parent::init();
+        $this->skipOnEmpty = false;
         if ($this->message === null)
             $this->message = Yii::t('yii', '{attribute} cannot be blank.');
         
@@ -43,33 +44,33 @@ class MandatoryMediaValidator extends Validator
 
     }
 
-    public function clientValidateAttribute($model, $attribute, $view) {
+    // public function clientValidateAttribute($model, $attribute, $view) {
 
-        $options = [
-            'attribute' => $attribute,
-            'id' => \yii\helpers\Html::getInputId($model, $attribute), 
-            'message' => Yii::$app->getI18n()->format($this->message, [
-                'attribute' => Inflector::camel2words($attribute),
-            ], Yii::$app->language),
-        ];
+    //     $options = [
+    //         'attribute' => $attribute,
+    //         'id' => \yii\helpers\Html::getInputId($model, $attribute), 
+    //         'message' => Yii::$app->getI18n()->format($this->message, [
+    //             'attribute' => Inflector::camel2words($attribute),
+    //         ], Yii::$app->language),
+    //     ];
 
-        MandatoryMediaValidationAsset::register($view);
-        return 'matamedia.validation.mandatory($form, value, messages, ' . Json::encode($options) . ');';
-    }
+    //     MandatoryMediaValidationAsset::register($view);
+    //     return 'matamedia.validation.mandatory($form, value, messages, ' . Json::encode($options) . ');';
+    // }
 
-    protected function prepareJsPattern($pattern) {
-        $pattern = preg_replace('/\\\\x\{?([0-9a-fA-F]+)\}?/', '\u$1', $pattern);
-        $deliminator = substr($pattern, 0, 1);
-        $pos = strrpos($pattern, $deliminator, 1);
-        $flag = substr($pattern, $pos + 1);
-        if ($deliminator !== '/') {
-            $pattern = '/' . str_replace('/', '\\/', substr($pattern, 1, $pos - 1)) . '/';
-        } else {
-            $pattern = substr($pattern, 0, $pos + 1);
-        }
-        if (!empty($flag)) {
-            $pattern .= preg_replace('/[^igm]/', '', $flag);
-        }
-        return $pattern;
-    }
+    // protected function prepareJsPattern($pattern) {
+    //     $pattern = preg_replace('/\\\\x\{?([0-9a-fA-F]+)\}?/', '\u$1', $pattern);
+    //     $deliminator = substr($pattern, 0, 1);
+    //     $pos = strrpos($pattern, $deliminator, 1);
+    //     $flag = substr($pattern, $pos + 1);
+    //     if ($deliminator !== '/') {
+    //         $pattern = '/' . str_replace('/', '\\/', substr($pattern, 1, $pos - 1)) . '/';
+    //     } else {
+    //         $pattern = substr($pattern, 0, $pos + 1);
+    //     }
+    //     if (!empty($flag)) {
+    //         $pattern .= preg_replace('/[^igm]/', '', $flag);
+    //     }
+    //     return $pattern;
+    // }
 }

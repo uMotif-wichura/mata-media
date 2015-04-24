@@ -4,6 +4,7 @@ namespace mata\media;
 
 use yii\base\BootstrapInterface;
 use yii\base\Event;
+use yii\base\Model;
 use yii\db\BaseActiveRecord;
 use mata\media\models\Media;
 use matacms\controllers\module\Controller;
@@ -19,6 +20,18 @@ class Bootstrap implements BootstrapInterface
 		
 		Event::on(Controller::class, Controller::EVENT_MODEL_CREATED, function(\matacms\base\MessageEvent $event) {
 			$this->updateDocumentIds($event->getMessage());
+		});
+
+		Event::on(Model::class, Model::EVENT_BEFORE_VALIDATE, function(\yii\base\ModelEvent $event) {
+			$activeValidators = $event->sender->getActiveValidators();
+
+			foreach($activeValidators as $validator) {				
+				if(get_class($validator) != 'mata\media\validators\MandatoryMediaValidator')
+					continue;
+
+				$event->sender->addAdditionalAttribute('Media');
+			}
+
 		});
 
 	}

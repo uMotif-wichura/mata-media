@@ -104,7 +104,7 @@ class S3Controller extends \mata\web\Controller {
 		'Id' => $model->Id,
 		'Name' => $model->Name,
 		'URI' => $model->URI,
-		'DocumentId' => $model->DocumentId->getId(),
+		'DocumentId' => $model->DocumentId,
 		'Width' => $model->Width,
 		'Height' => $model->Height,
 		'MimeType' => $model->MimeType,
