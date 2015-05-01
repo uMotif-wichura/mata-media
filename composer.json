@@ -13,8 +13,7 @@
         "yiisoft/yii2-faker": "*",
         "mata/mata-key-value": "*",
         "harrytang/yii2-fineuploader": "*",
-        "aws/aws-sdk-php": "*",
-        "mata/mata-ar-history": "dev-development"
+        "aws/aws-sdk-php": "*"
     },
     "autoload": {
         "psr-4": {

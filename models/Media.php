@@ -5,7 +5,6 @@ namespace mata\media\models;
 use Yii;
 use mata\db\ActiveRecord;
 use yii\db\ActiveQuery;
-use mata\arhistory\behaviors\HistoryBehavior;
 
 /**
  * This is the model class for table "{{%mata_media}}".
