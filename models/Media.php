@@ -5,7 +5,6 @@ namespace mata\media\models;
 use Yii;
 use mata\db\ActiveRecord;
 use yii\db\ActiveQuery;
-use mata\arhistory\behaviors\HistoryBehavior;
 
 /**
  * This is the model class for table "{{%mata_media}}".
@@ -23,7 +22,6 @@ class Media extends \mata\db\ActiveRecord {
 
     public function behaviors() {
         return [
-            HistoryBehavior::className()
         ];
     }
 
@@ -67,21 +65,6 @@ class Media extends \mata\db\ActiveRecord {
         ];
     }
 
-    public function getDocumentId($attribute = null) {
-
-        $pk = $this->primaryKey;
-
-        if(empty($pk) && $this->isNewRecord)
-            $pk = uniqid('tmp_');
-
-        if (is_array($pk))
-            $pk = implode('-', $pk);            
-
-        if ($attribute != null)
-            $pk .= "::" . $attribute;
-
-        return sprintf("%s-%s", get_class($this), $pk);
-    }
 }
 
 
@@ -90,7 +73,9 @@ class MediaQuery extends ActiveQuery {
     public function forItem($item, $attribute = null) {
 
         if (is_object($item))
-            $item = $item->getDocumentId();
+            $item = $item->getDocumentId()->getId();
+
+
 
         if ($attribute != null)
             $item .= "::" . $attribute;

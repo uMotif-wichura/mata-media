@@ -4,6 +4,7 @@ namespace mata\media;
 
 use yii\base\BootstrapInterface;
 use yii\base\Event;
+use yii\base\Model;
 use yii\db\BaseActiveRecord;
 use mata\media\models\Media;
 use matacms\controllers\module\Controller;
@@ -21,6 +22,19 @@ class Bootstrap implements BootstrapInterface
 			$this->updateDocumentIds($event->getMessage());
 		});
 
+		Event::on(Model::class, Model::EVENT_BEFORE_VALIDATE, function(\yii\base\ModelEvent $event) {
+			if($event->sender instanceof \mata\db\ActiveRecord) {
+				$activeValidators = $event->sender->getActiveValidators();
+
+				foreach($activeValidators as $validator) {				
+					if(get_class($validator) != 'mata\media\validators\MandatoryMediaValidator')
+						continue;
+
+					$event->sender->addAdditionalAttribute('Media');
+				}
+			}
+		});
+
 	}
 
 	private function updateDocumentIds($model) 
@@ -32,11 +46,6 @@ class Bootstrap implements BootstrapInterface
 			}
 		}
 				
-	}
-
-	private function canRun($app) 
-	{
-		return is_a($app, "yii\console\Application") == false;
 	}
 
 	private function updateDocumentId($model, $tmpDocumentId)
@@ -53,4 +62,10 @@ class Bootstrap implements BootstrapInterface
 				throw new \yii\web\HttpException(500, $media->getTopError());
 		}
 	}
+
+	private function canRun($app) 
+	{
+		return is_a($app, "yii\console\Application") == false;
+	}
+	
 }

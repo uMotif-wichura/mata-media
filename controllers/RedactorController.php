@@ -30,12 +30,12 @@ class RedactorController extends \yii\web\Controller {
 
 	public function actionS3() {
 
-		$S3_KEY = trim(KeyValue::findbyKey(self::S3_KEY));
-		$S3_SECRET = trim(KeyValue::findbyKey(self::S3_SECRET));
-		$S3_BUCKET = "/" . KeyValue::findbyKey(self::S3_BUCKET);
+		$S3_KEY = trim(KeyValue::findValue(self::S3_KEY));
+		$S3_SECRET = trim(KeyValue::findValue(self::S3_SECRET));
+		$S3_BUCKET = "/" . KeyValue::findValue(self::S3_BUCKET);
 
-		$S3_URL = KeyValue::findbyKey(self::S3_ENDPOINT);
-		$S3_FOLDER = KeyValue::findbyKey(self::S3_REDACTOR_FOLDER);
+		$S3_URL = KeyValue::findValue(self::S3_ENDPOINT);
+		$S3_FOLDER = KeyValue::findValue(self::S3_REDACTOR_FOLDER);
 
 		if ($S3_KEY == null || 
 			$S3_SECRET == null || 

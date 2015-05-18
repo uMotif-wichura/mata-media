@@ -21,15 +21,15 @@ class S3Controller extends \mata\web\Controller {
 
 		$this->setResponseContentType("application/json");
 
-		$s3Key = KeyValue::findbyKey(self::S3_KEY);
-		$s3Secret = KeyValue::findbyKey(self::S3_SECRET);
-		$s3Bucket = KeyValue::findbyKey(self::S3_BUCKET);
+		$s3Key = KeyValue::findValue(self::S3_KEY);
+		$s3Secret = KeyValue::findValue(self::S3_SECRET);
+		$s3Bucket = KeyValue::findValue(self::S3_BUCKET);
 
 		// Instantiate the S3 client with your AWS credentials
 		$s3Client = S3Client::factory(array(
 			'key'    => $s3Key,
 			'secret' => $s3Secret,
-			'region' => KeyValue::findbyKey(self::S3_REGION)
+			'region' => KeyValue::findValue(self::S3_REGION)
 			));
 
 		$policyDocument = '{"expiration":"2100-01-01T00:00:00Z","conditions":[{"bucket": "' . $s3Bucket . '"},{"acl": "public-read"}, ["starts-with", "$key", ""], ["starts-with", "$Content-Type", ""], 
@@ -50,14 +50,25 @@ class S3Controller extends \mata\web\Controller {
 
 	public function actionUploadSuccessful() {
 
-		$s3Endpoint = KeyValue::findByKey(self::S3_ENDPOINT);
-		$s3Bucket = KeyValue::findByKey(self::S3_BUCKET);
+		$s3Endpoint = KeyValue::findValue(self::S3_ENDPOINT);
+		$s3Bucket = KeyValue::findValue(self::S3_BUCKET);
 
 		$imageURL = $s3Endpoint . "/" . $s3Bucket  . "/" . urlencode(\Yii::$app->getRequest()->post("key"));
 		$documentId = \Yii::$app->getRequest()->get("documentId");
 
 		if($media = Media::find()->where(["DocumentId" => $documentId])->one())
 			$media->delete();
+
+		$pattern = '/([a-zA-Z\\\]*)-([a-zA-Z0-9]*)(::)?([a-zA-Z0-9]*)?/';
+		preg_match($pattern, $documentId, $matches);	
+
+		if(!empty($matches) && empty($matches[2])) {
+			$pk = uniqid('tmp_');
+			if(!empty($matches[4]))
+				$pk .= "::" . $matches[4];
+
+			$documentId = $matches[1] . "-" . $pk;
+		}
 
 		$mediaWidth = 0; 
 		$mediaHeight = 0;
@@ -89,8 +100,34 @@ class S3Controller extends \mata\web\Controller {
 		if ($model->save() == false)
 			throw new \yii\web\HttpException(500, $model->getTopError());
 
+		$mediaResponse = [
+		'Id' => $model->Id,
+		'Name' => $model->Name,
+		'URI' => $model->URI,
+		'DocumentId' => $model->DocumentId->getId(),
+		'Width' => $model->Width,
+		'Height' => $model->Height,
+		'MimeType' => $model->MimeType,
+		'Extra' => $model->Extra,
+		];
+		
 		$this->setResponseContentType("application/json");
-		echo Json::encode($model);
+		echo Json::encode($mediaResponse);
+	}
+
+	public function actionSetRandomFileName() {
+
+		$this->setResponseContentType("application/json");
+
+		$name = \Yii::$app->getRequest()->post("name");
+
+		$pathInfo = pathinfo($name);
+		$extension = isset($pathInfo["extension"]) ? $pathInfo["extension"] : "";
+
+		$objectName = md5(time() . $name) . ".$extension";
+
+		$response = array('key' => $objectName);
+		echo json_encode($response);
 	}
 
 }
