@@ -4,16 +4,10 @@
     "keywords": ["yii2", "mata-media", "media", "images", "mata", "video"],
     "type": "yii2-extension",
     "license": "MIT",
-    "support": {
-    },
     "minimum-stability": "dev",
     "require": {
-        "codeception/codeception": "*",
-        "yiisoft/yii2-codeception": "*",
-        "yiisoft/yii2-faker": "*",
-        "mata/mata-key-value": "*",
-        "harrytang/yii2-fineuploader": "*",
-        "aws/aws-sdk-php": "*"
+        "mata/mata-key-value": "~1.0.0-alpha",
+        "aws/aws-sdk-php": "2.*"
     },
     "autoload": {
         "psr-4": {

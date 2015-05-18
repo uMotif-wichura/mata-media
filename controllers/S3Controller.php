@@ -1,4 +1,10 @@
-<?php 
+<?php
+ 
+/**
+ * @link http://www.matacms.com/
+ * @copyright Copyright (c) 2015 Qi Interactive Limited
+ * @license http://www.matacms.com/license/
+ */
 
 namespace mata\media\controllers;
 
@@ -25,7 +31,6 @@ class S3Controller extends \mata\web\Controller {
 		$s3Secret = KeyValue::findValue(self::S3_SECRET);
 		$s3Bucket = KeyValue::findValue(self::S3_BUCKET);
 
-		// Instantiate the S3 client with your AWS credentials
 		$s3Client = S3Client::factory(array(
 			'key'    => $s3Key,
 			'secret' => $s3Secret,

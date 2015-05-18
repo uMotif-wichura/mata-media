@@ -1,4 +1,10 @@
-<?php 
+<?php
+ 
+/**
+ * @link http://www.matacms.com/
+ * @copyright Copyright (c) 2015 Qi Interactive Limited
+ * @license http://www.matacms.com/license/
+ */
 
 namespace mata\media;
 
@@ -34,7 +40,6 @@ class Bootstrap implements BootstrapInterface
 				}
 			}
 		});
-
 	}
 
 	private function updateDocumentIds($model) 
@@ -45,7 +50,6 @@ class Bootstrap implements BootstrapInterface
 				$this->updateDocumentId($model, $tmpDocumentId);
 			}
 		}
-				
 	}
 
 	private function updateDocumentId($model, $tmpDocumentId)
@@ -63,9 +67,7 @@ class Bootstrap implements BootstrapInterface
 		}
 	}
 
-	private function canRun($app) 
-	{
+	private function canRun($app) {
 		return is_a($app, "yii\console\Application") == false;
 	}
-	
 }

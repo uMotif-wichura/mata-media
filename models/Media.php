@@ -1,4 +1,10 @@
 <?php
+ 
+/**
+ * @link http://www.matacms.com/
+ * @copyright Copyright (c) 2015 Qi Interactive Limited
+ * @license http://www.matacms.com/license/
+ */
 
 namespace mata\media\models;
 
@@ -25,17 +31,11 @@ class Media extends \mata\db\ActiveRecord {
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
     public static function tableName()
     {
         return '{{%mata_media}}';
     }
 
-    /**
-     * @inheritdoc
-     */
     public function rules() {
         return [
         [['Name', 'MimeType', 'DocumentId'], 'required'],
@@ -45,15 +45,10 @@ class Media extends \mata\db\ActiveRecord {
         ];
     }
 
-    
-     public static function find() {
+    public static function find() {
        return new MediaQuery(get_called_class());
     }
 
-
-    /**
-     * @inheritdoc
-     */
     public function attributeLabels() {
         return [
         'Id' => 'ID',
@@ -64,9 +59,7 @@ class Media extends \mata\db\ActiveRecord {
         'Extra' => 'Extra',
         ];
     }
-
 }
-
 
 class MediaQuery extends ActiveQuery {
 
@@ -75,13 +68,10 @@ class MediaQuery extends ActiveQuery {
         if (is_object($item))
             $item = $item->getDocumentId()->getId();
 
-
-
         if ($attribute != null)
             $item .= "::" . $attribute;
 
         $this->andWhere(['DocumentId' => $item]);
         return $this;
     }
-
 }
