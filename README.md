@@ -22,6 +22,11 @@ php yii migrate/up --migrationPath=@vendor/mata/mata-media/migrations
 Changelog
 ---------
 
+## 1.0.1-alpha, May 25, 2015
+- [[Media]] model uses [[mata\db\ActiveQuery]]
+- Added caching for getting single individual records with [[cachedOne()]]
+- Added dependency on mata-framework ~1.0.1-alpha
+
 ## 1.0.0-alpha, May 18, 2015
 
 - Initial release.

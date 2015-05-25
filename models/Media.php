@@ -10,7 +10,7 @@ namespace mata\media\models;
 
 use Yii;
 use mata\db\ActiveRecord;
-use matacms\db\ActiveQuery;
+use mata\db\ActiveQuery;
 
 /**
  * This is the model class for table "{{%mata_media}}".
