@@ -10,7 +10,7 @@ namespace mata\media\models;
 
 use Yii;
 use mata\db\ActiveRecord;
-use yii\db\ActiveQuery;
+use mata\db\ActiveQuery;
 
 /**
  * This is the model class for table "{{%mata_media}}".
@@ -73,5 +73,9 @@ class MediaQuery extends ActiveQuery {
 
         $this->andWhere(['DocumentId' => $item]);
         return $this;
+    }
+
+    public function one($db = null) {
+        return $this->cachedOne($db);
     }
 }
