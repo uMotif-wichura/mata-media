@@ -8,7 +8,7 @@
     "require": {
         "mata/mata-key-value": "~1.0.0-alpha",
         "aws/aws-sdk-php": "2.*",
-        "mata/mata-framework" : "dev-master"
+        "mata/mata-framework" : "~1.0.0-alpha"
     },
     "autoload": {
         "psr-4": {
