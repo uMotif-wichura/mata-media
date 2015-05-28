@@ -22,7 +22,7 @@ php yii migrate/up --migrationPath=@vendor/mata/mata-media/migrations
 Changelog
 ---------
 
-## TBD
+## 1.0.2-alpha, May 28, 2015
 - Changed the logic for Media to allow for versioning, environments and media deletion
 - Added migration which renames [[DocumentId]] column to [[For]]
 
