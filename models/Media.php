@@ -10,7 +10,7 @@ namespace mata\media\models;
 
 use Yii;
 use mata\db\ActiveRecord;
-use mata\db\ActiveQuery;
+use matacms\db\ActiveQuery;
 use mata\arhistory\behaviors\HistoryBehavior;
 use matacms\environment\behaviors\EnvironmentBehavior;
 
@@ -67,6 +67,9 @@ class Media extends \matacms\db\ActiveRecord {
 
 class MediaQuery extends ActiveQuery {
 
+    // hack
+    public $returnEmpty = false;
+
     public function forItem($item, $attribute = null) {
 
         if (is_object($item))
@@ -76,6 +79,11 @@ class MediaQuery extends ActiveQuery {
             $item .= "::" . $attribute;
 
         $this->andWhere(['For' => $item]);
+        return $this;
+    }
+
+    public function returnEmpty() {
+        $this->returnEmpty = true;
         return $this;
     }
 
