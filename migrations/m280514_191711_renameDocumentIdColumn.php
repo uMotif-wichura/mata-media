@@ -17,6 +17,6 @@ class m280514_191711_renameDocumentIdColumn extends Migration
     public function safeUp() {
     	$this->dropIndex("UQ_DocumentId", "{{%mata_media}}");
         $this->renameColumn("{{%mata_media}}", "DocumentId", "For");
-        $this->createIndex("UQ_For", "{{%mata_media}}", "DocumentId", true);
+        $this->createIndex("UQ_For", "{{%mata_media}}", "For", true);
     }
 }

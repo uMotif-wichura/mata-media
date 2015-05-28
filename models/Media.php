@@ -37,7 +37,7 @@ class Media extends \matacms\db\ActiveRecord {
 
     public static function tableName()
     {
-        return '{{%media2}}';
+        return '{{%mata_media}}';
     }
 
     public function rules() {
