@@ -22,6 +22,9 @@ php yii migrate/up --migrationPath=@vendor/mata/mata-media/migrations
 Changelog
 ---------
 
+## TBD
+- Changed the logic for Media to allow for versioning, environments and media deletion
+
 ## 1.0.1-alpha, May 25, 2015
 - [[Media]] model uses [[mata\db\ActiveQuery]]
 - Added caching for getting single individual records with [[cachedOne()]]
