@@ -37,8 +37,9 @@ class MandatoryMediaValidator extends Validator
             $hasAttributeInMedia = false;
             foreach($media as $key => $mediaEntity) {
 
-                $documentId = $mediaEntity["DocumentId"];
-                if (StringHelper::endsWith($documentId, '::' . $attribute))
+                $documentId = isset($mediaEntity["DocumentId"]) ? $mediaEntity["DocumentId"] : null;
+
+                if ($documentId != null && StringHelper::endsWith($documentId, '::' . $attribute))
                     $hasAttributeInMedia = true;
 
                 

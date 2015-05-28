@@ -24,6 +24,7 @@ Changelog
 
 ## TBD
 - Changed the logic for Media to allow for versioning, environments and media deletion
+- Added migration which renames [[DocumentId]] column to [[For]]
 
 ## 1.0.1-alpha, May 25, 2015
 - [[Media]] model uses [[mata\db\ActiveQuery]]
