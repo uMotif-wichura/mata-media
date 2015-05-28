@@ -86,21 +86,26 @@ class Bootstrap implements BootstrapInterface
 		foreach ($mediaFromRequest as $sourceWidgetId => $mediaPayload) {
 
 			if (array_key_exists("delete", $mediaPayload)) {
+				
 				$documentId = $mediaPayload["delete"];
 				$media = Media::find()->where(["For" => $documentId])->one();
-				$media->setAttributes([]);
-				$media->For = $documentId;
+				$media->URI = "DELETED";
 
-				if ($media->save() == false)
+				if ($media->save(false) == false)
 					throw new \yii\web\HttpException(500, $media->getTopError());
+
 			} else {
 				$this->updateDocumentId($model, $mediaPayload);
 			}
 		}
 	}
 
-	private function updateDocumentId($model, $mediaPayload)
-	{
+	private function updateDocumentId($model, $mediaPayload) {
+	
+		if (empty($mediaPayload["DocumentId"])) {
+			print_r($mediaPayload);
+			exit;
+		}
 
 		$documentId = $mediaPayload["DocumentId"];
 		$attributeName = null;
@@ -116,13 +121,12 @@ class Bootstrap implements BootstrapInterface
 
 		$documentId = $model->getDocumentId($attributeName)->getId();
 
-		$media = Media::find()->where(["For" => $documentId])->one();
+		$media = Media::find()->where(["For" => $documentId])->returnEmpty()->one();
 
 		if ($media == null)
 			$media = new Media();
 
 		$media->attributes = $mediaPayload;
-
 		$media->For = $documentId;
 
 		if ($media->save() == false)

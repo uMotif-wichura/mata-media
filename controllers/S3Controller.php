@@ -22,21 +22,16 @@ class S3Controller extends \mata\web\Controller {
 	public function actionSignature() {
 
 		$this->setResponseContentType("application/json");
-
-		$s3Key = KeyValue::findbyKey(self::S3_KEY);
-		$s3Secret = KeyValue::findbyKey(self::S3_SECRET);
-		$s3Bucket = KeyValue::findbyKey(self::S3_BUCKET);
-
-		// Instantiate the S3 client with your AWS credentials
+		$s3Key = KeyValue::findValue(self::S3_KEY);
+		$s3Secret = KeyValue::findValue(self::S3_SECRET);
+		$s3Bucket = KeyValue::findValue(self::S3_BUCKET);
 		$s3Client = S3Client::factory(array(
 			'key'    => $s3Key,
 			'secret' => $s3Secret,
-			'region' => KeyValue::findbyKey(self::S3_REGION)
+			'region' => KeyValue::findValue(self::S3_REGION)
 			));
-
 		$policyDocument = '{"expiration":"2100-01-01T00:00:00Z","conditions":[{"bucket": "' . $s3Bucket . '"},{"acl": "public-read"}, ["starts-with", "$key", ""], ["starts-with", "$Content-Type", ""], 
 		["starts-with", "$success_action_status", ""], ["starts-with", "$x-amz-meta-qqfilename", ""]]}';
-
 		$encodedPolicy = base64_encode($policyDocument);
 		$signature = base64_encode(hash_hmac(
 			'sha1',
@@ -44,18 +39,16 @@ class S3Controller extends \mata\web\Controller {
 			$s3Secret,
 			true
 			));
-
-
 		$response = array('policy' => $encodedPolicy, 'signature' => $signature);
 		echo json_encode($response);
 	}
 
 	public function actionUploadSuccessful() {
 
-		$s3Endpoint = KeyValue::findByKey(self::S3_ENDPOINT);
-		$s3Bucket = KeyValue::findByKey(self::S3_BUCKET);
+		$s3Endpoint = KeyValue::findValue(self::S3_ENDPOINT);
+		$s3Bucket = KeyValue::findValue(self::S3_BUCKET);
 
-		$imageURL = $s3Endpoint .  $s3Bucket  . "/" . urlencode(\Yii::$app->getRequest()->post("key"));
+		$imageURL = $s3Endpoint . "/" . $s3Bucket  . "/" . urlencode(\Yii::$app->getRequest()->post("key"));
 		$documentId = \Yii::$app->getRequest()->get("documentId");
 
 		// if($media = Media::find()->where(["For" => $documentId])->one())
@@ -151,8 +144,15 @@ class S3Controller extends \mata\web\Controller {
 	}
 
 	public function actionSetRandomFileName() {
+		
 		$this->setResponseContentType("application/json");
-		echo Json::encode($model);
+		$name = \Yii::$app->getRequest()->post("name");
+		$pathInfo = pathinfo($name);
+		$extension = isset($pathInfo["extension"]) ? $pathInfo["extension"] : "";
+		$objectName = md5(time() . $name) . ".$extension";
+		$response = array('key' => $objectName);
+		echo json_encode($response);
+
 	}
 
 }
