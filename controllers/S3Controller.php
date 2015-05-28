@@ -58,22 +58,6 @@ class S3Controller extends \mata\web\Controller {
 		$imageURL = $s3Endpoint .  $s3Bucket  . "/" . urlencode(\Yii::$app->getRequest()->post("key"));
 		$documentId = \Yii::$app->getRequest()->get("documentId");
 
-<<<<<<< Updated upstream
-		Media::find()->where(["DocumentId" => $documentId])->one()->delete();
-
-		$model = new Media() ;
-		$model->attributes = array(
-			"Name" => \Yii::$app->getRequest()->post("name"),
-			"DocumentId" => $documentId,
-			"URI" => $imageURL,
-			"Width" => 0,
-			"Height" => 0,
-			"MimeType" => "default"
-			);
-
-		if ($model->save() == false)
-			throw new CHttpException(500, $model->getTopError());
-=======
 		// if($media = Media::find()->where(["For" => $documentId])->one())
 		// 	$media->delete();
 
@@ -167,8 +151,6 @@ class S3Controller extends \mata\web\Controller {
 	}
 
 	public function actionSetRandomFileName() {
->>>>>>> Stashed changes
-
 		$this->setResponseContentType("application/json");
 		echo Json::encode($model);
 	}
