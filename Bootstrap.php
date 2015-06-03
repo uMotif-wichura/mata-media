@@ -47,39 +47,6 @@ class Bootstrap implements BootstrapInterface
 		});
 	}
 
-	private function manageMediaDeletions($model) {
-
-		$existingMedia = Media::find()->where(["LIKE", "For", $model->documentId->getId()])->all();
-
-		foreach ($existingMedia as $media) {
-
-			$documentId = $media->For;
-
-			if (!in_array($documentId, $_POST["Media"])) {
-				// Media has been removed from the core model, update version
-				$revision = $media->getLatestRevision();
-				$revisionAttributes = unserialize($revision->Attributes);
-
-				foreach ($revisionAttributes as $k => $v) {
-					if ($k == "Id")
-						continue;
-					
-					$revisionAttributes[$k] = null;
-				}
-
-				// $revision->Attributes = serialize($revisionAttributes);
-				$newRevision = new Revision();#
-				$newRevision->DocumentId = $revision->DocumentId;
-				$newRevision->Revision = $revision->Revision + 1;
-				$newRevision->Attributes = serialize($revisionAttributes);
-
-				if ($newRevision->save() == false)
-					throw new \yii\web\HttpException(500, $media->getTopError());
-			}
-		}
-
-	}
-
 	private function updateDocumentIds($model) 
 	{
 		$mediaFromRequest = \Yii::$app->request->post('Media', []);
@@ -89,10 +56,15 @@ class Bootstrap implements BootstrapInterface
 				
 				$documentId = $mediaPayload["delete"];
 				$media = Media::find()->where(["For" => $documentId])->one();
-				$media->URI = "DELETED";
-
 				if ($media->save(false) == false)
 					throw new \yii\web\HttpException(500, $media->getTopError());
+
+				$rev = $media->getLatestRevision();
+				$media->attributes = [];
+				$rev->Status = 0;
+
+				if ($rev->save(false) == false)
+						throw new \yii\web\HttpException(500, $rev->getTopError());
 
 			} else {
 				$this->updateDocumentId($model, $mediaPayload);
@@ -102,11 +74,6 @@ class Bootstrap implements BootstrapInterface
 
 	private function updateDocumentId($model, $mediaPayload) {
 	
-		if (empty($mediaPayload["DocumentId"])) {
-			print_r($mediaPayload);
-			exit;
-		}
-
 		$documentId = $mediaPayload["DocumentId"];
 		$attributeName = null;
 
@@ -118,10 +85,18 @@ class Bootstrap implements BootstrapInterface
 		if ($attributeName == null)
 			throw new \yii\web\HttpException(500, "attributeName cannot be null");
 
-
 		$documentId = $model->getDocumentId($attributeName)->getId();
 
-		$media = Media::find()->where(["For" => $documentId])->returnEmpty()->one();
+		$media = Media::find()->where(["For" => $documentId]);
+
+		/**
+		 * Mark the ActiveQuery as handed, so that EVENT_BEFORE_PREPARE_STATEMENT does not fire. 
+		 * This is to prevent getting the latest version of the model, which might have been deleted
+		 * which would result in a NULL returned. In such case saving a new record with the same 
+		 * DocumentId would throw an exception
+		 */ 
+		$media->handled = true;
+		$media = $media->one();
 
 		if ($media == null)
 			$media = new Media();

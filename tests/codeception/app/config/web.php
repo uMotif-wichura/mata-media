@@ -13,15 +13,17 @@ return [
         '@bower'         => VENDOR_DIR . '/bower',
     ],
     'modules' => [
-        'user' => [
-            'class' => 'mata\user\Module',
-            'admins' => ['user'],
-            'mailer' => [
-                'class' => 'app\components\MailerMock',
-            ],
-        ]
+        'environment' => 'matacms\environment\Module',
+        // 'user' => [
+        //     'class' => 'mata\user\Module',
+        //     'admins' => ['user'],
+        //     'mailer' => [
+        //         'class' => 'app\components\MailerMock',
+        //     ],
+        // ]
     ],
     'components' => [
+        'user' => 'app\components\User',
         'assetManager' => [
             'basePath' => '@tests/codeception/app/assets'
         ],

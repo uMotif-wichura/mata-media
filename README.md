@@ -22,6 +22,12 @@ php yii migrate/up --migrationPath=@vendor/mata/mata-media/migrations
 Changelog
 ---------
 
+## 1.0.3-alpha, June 3, 2015
+- Updated config for CodeCeption
+- Addressed issue with multiple registration of handlers for events in BootstrapInterface
+- Added MediaTest which currently encapsulates Media, Environment and AR History test cases
+- Removed AspectMock
+
 ## 1.0.2-alpha, May 28, 2015
 - Changed the logic for Media to allow for versioning, environments and media deletion
 - Added migration which renames [[DocumentId]] column to [[For]]
