@@ -22,6 +22,10 @@ php yii migrate/up --migrationPath=@vendor/mata/mata-media/migrations
 Changelog
 ---------
 
+## 1.0.4-alpha, June 9, 2015
+
+- Added dependency on mata/mata-framework : ~1.1.0-alpha
+
 ## 1.0.3-alpha, June 3, 2015
 - Updated config for CodeCeption
 - Addressed issue with multiple registration of handlers for events in BootstrapInterface
