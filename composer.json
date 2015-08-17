@@ -10,6 +10,10 @@
         "aws/aws-sdk-php": "2.*",
         "mata/mata-framework" : "~1.1.0-alpha"
     },
+    "require-dev": {
+        "mata/mata-key-value": "dev-development",
+        "mata/mata-framework" : "dev-development"
+    },
     "autoload": {
         "psr-4": {
             "mata\\media\\": ""
