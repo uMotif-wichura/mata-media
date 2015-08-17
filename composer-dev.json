@@ -6,9 +6,9 @@
     "license": "MIT",
     "minimum-stability": "dev",
     "require": {
-        "mata/mata-key-value": "~1.0.0-alpha",
+        "mata/mata-key-value": "dev-development",
         "aws/aws-sdk-php": "2.*",
-        "mata/mata-framework" : "~1.1.0-alpha"
+        "mata/mata-framework" : "dev-development"
     },
     "autoload": {
         "psr-4": {
