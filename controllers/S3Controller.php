@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace mata\media\controllers;
 
@@ -30,7 +30,7 @@ class S3Controller extends \mata\web\Controller {
 			'secret' => $s3Secret,
 			'region' => KeyValue::findValue(self::S3_REGION)
 			));
-		$policyDocument = '{"expiration":"2100-01-01T00:00:00Z","conditions":[{"bucket": "' . $s3Bucket . '"},{"acl": "public-read"}, ["starts-with", "$key", ""], ["starts-with", "$Content-Type", ""], 
+		$policyDocument = '{"expiration":"2100-01-01T00:00:00Z","conditions":[{"bucket": "' . $s3Bucket . '"},{"acl": "public-read"}, ["starts-with", "$key", ""], ["starts-with", "$Content-Type", ""],
 		["starts-with", "$success_action_status", ""], ["starts-with", "$x-amz-meta-qqfilename", ""]]}';
 		$encodedPolicy = base64_encode($policyDocument);
 		$signature = base64_encode(hash_hmac(
@@ -48,14 +48,14 @@ class S3Controller extends \mata\web\Controller {
 		$s3Endpoint = KeyValue::findValue(self::S3_ENDPOINT);
 		$s3Bucket = KeyValue::findValue(self::S3_BUCKET);
 
-		$imageURL = $s3Endpoint . "/" . $s3Bucket  . "/" . urlencode(\Yii::$app->getRequest()->post("key"));
+		$fileURL = $s3Endpoint . "/" . $s3Bucket  . "/" . urlencode(\Yii::$app->getRequest()->post("key"));
 		$documentId = \Yii::$app->getRequest()->get("documentId");
 
 		// if($media = Media::find()->where(["For" => $documentId])->one())
 		// 	$media->delete();
 
 		// $pattern = '/([a-zA-Z\\\]*)-([a-zA-Z0-9]*)(::)?([a-zA-Z0-9]*)?/';
-		// preg_match($pattern, $documentId, $matches);	
+		// preg_match($pattern, $documentId, $matches);
 
 		// $model = Media::find()->forItem($documentId)->one();
 
@@ -71,18 +71,21 @@ class S3Controller extends \mata\web\Controller {
 		// 	$model->disableVersioning();
 		// }
 
-		// $mediaWidth = 0; 
+		// $mediaWidth = 0;
 		// $mediaHeight = 0;
 		// $mimeType = "default";
 
-		$imageAttributes = getimagesize($imageURL);
+		$imageAttributes = getimagesize($fileURL);
+
+		$mediaWidth = 0;
+		$mediaHeight = 0;
 
 		if ($imageAttributes != null) {
 			$mediaWidth = $imageAttributes[0];
 			$mediaHeight = $imageAttributes[1];
 			$mimeType = $imageAttributes['mime'];
 		} else {
-			$ch = curl_init($imageURL);
+			$ch = curl_init($fileURL);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			curl_exec($ch);
 			$mimeType = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
@@ -95,7 +98,7 @@ class S3Controller extends \mata\web\Controller {
 		// $model->attributes = array(
 		// 	"Name" => \Yii::$app->getRequest()->post("name"),
 		// 	"For" => $documentId,
-		// 	"URI" => $imageURL,
+		// 	"URI" => $fileURL,
 		// 	"Width" => $mediaWidth,
 		// 	"Height" => $mediaHeight,
 		// 	"MimeType" => $mimeType
@@ -114,7 +117,7 @@ class S3Controller extends \mata\web\Controller {
 
 		// 	if ($existingRevision)
 		// 		$linkedModelRevision = $existingRevision->Revision + 1;
-			
+
 		// 	$oldRevision = Revision::find()->where(["DocumentId" => $existingRevision->DocumentId, "Revision" => $linkedModelRevision])->one();
 
 		// 	if ($oldRevision)
@@ -131,20 +134,20 @@ class S3Controller extends \mata\web\Controller {
 		$mediaResponse = [
 			// 'Id' => time(), // Id is required by fineUploader
 			'Name' => \Yii::$app->getRequest()->post("name"),
-			'URI' => $imageURL,
+			'URI' => $fileURL,
 			'DocumentId' => $documentId,
 			'Width' => $mediaWidth,
 			'Height' => $mediaHeight,
 			'MimeType' => $mimeType,
 			// 'Extra' => $model->Extra,
 		];
-		
+
 		$this->setResponseContentType("application/json");
 		echo Json::encode($mediaResponse);
 	}
 
 	public function actionSetRandomFileName() {
-		
+
 		$this->setResponseContentType("application/json");
 		$name = \Yii::$app->getRequest()->post("name");
 		$pathInfo = pathinfo($name);
