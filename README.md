@@ -7,7 +7,7 @@ Media module interfaces with media storages such as AWS S3 to host content like 
 Installation
 ------------
 
-- Add the module using composer: 
+- Add the module using composer:
 
 ```json
 "mata/mata-media": "~1.0.0"
@@ -21,6 +21,10 @@ php yii migrate/up --migrationPath=@vendor/mata/mata-media/migrations
 
 Changelog
 ---------
+
+## 1.0.5-alpha, October 4, 2016
+
+- Updates for S3Controller
 
 ## 1.0.4-alpha, June 9, 2015
 
