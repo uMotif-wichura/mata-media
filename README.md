@@ -22,7 +22,7 @@ php yii migrate/up --migrationPath=@vendor/mata/mata-media/migrations
 Changelog
 ---------
 
-## 1.0.5-alpha, October 4, 2016
+## 1.0.4.1-alpha, October 4, 2016
 
 - Updates for S3Controller
 
