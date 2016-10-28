@@ -22,6 +22,10 @@ php yii migrate/up --migrationPath=@vendor/mata/mata-media/migrations
 Changelog
 ---------
 
+## 1.0.4.2-alpha, October 28, 2016
+
+- Added client validation for MandatoryMediaValidator
+
 ## 1.0.4.1-alpha, October 4, 2016
 
 - Updates for S3Controller
