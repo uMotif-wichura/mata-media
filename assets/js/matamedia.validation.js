@@ -26,17 +26,15 @@ matamedia.validation = (function ($) {
                 return;
             }
 
-            var media = $form.find('input#' + options.id);
+            var media = $form.find('input[name="Media[' + options.id + '][DocumentId]"]');
+
             if(media.length == 0) {
                 pub.addMessage(messages, options.message, value);
             } else if(this.isEmpty(media.val())) {
                 pub.addMessage(messages, options.message, value);
             }
-
-
-
         }
-        
+
     };
 
     return pub;
